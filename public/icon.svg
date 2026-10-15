@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-piano size-6" aria-hidden="true">
+  <path d="M18.5 8c-1.4 0-2.6-.8-3.2-2A6.87 6.87 0 0 0 2 9v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-8.5C22 9.6 20.4 8 18.5 8"></path>
+  <path d="M2 14h20"></path>
+  <path d="M6 14v4"></path>
+  <path d="M10 14v4"></path>
+  <path d="M14 14v4"></path>
+  <path d="M18 14v4"></path>
+</svg>
+
+<!-- orbit
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-orbit size-6" aria-hidden="true">
+  <path d="M20.341 6.484A10 10 0 0 1 10.266 21.85"></path>
+  <path d="M3.659 17.516A10 10 0 0 1 13.74 2.152"></path>
+  <circle cx="12" cy="12" r="3"></circle>
+  <circle cx="19" cy="5" r="2"></circle>
+  <circle cx="5" cy="19" r="2"></circle>
+  </svg> 
+-->

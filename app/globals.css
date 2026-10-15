@@ -1,0 +1,320 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-Mona10x12), sans-serif;
+  --font-display: var(--font-Mona10x12), sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  color-scheme: light;
+  --background: oklch(0.98 0.014 85);
+  --foreground: oklch(0.27 0.03 55);
+  --card: oklch(0.995 0.006 85);
+  --card-foreground: oklch(0.27 0.03 55);
+  --popover: oklch(0.995 0.006 85);
+  --popover-foreground: oklch(0.27 0.03 55);
+  --primary: oklch(0.72 0.15 65);
+  --primary-foreground: oklch(0.99 0.01 85);
+  --secondary: oklch(0.94 0.02 85);
+  --secondary-foreground: oklch(0.35 0.04 55);
+  --muted: oklch(0.95 0.015 85);
+  --muted-foreground: oklch(0.53 0.03 60);
+  --accent: oklch(0.7 0.09 190);
+  --accent-foreground: oklch(0.99 0.01 190);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.9 0.02 80);
+  --input: oklch(0.9 0.02 80);
+  --ring: oklch(0.72 0.15 65);
+  --chart-1: oklch(0.72 0.15 65);
+  --chart-2: oklch(0.7 0.09 190);
+  --chart-3: oklch(0.6 0.08 55);
+  --chart-4: oklch(0.5 0.06 60);
+  --chart-5: oklch(0.4 0.04 55);
+  --radius: 0.75rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  color-scheme: dark;
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    color-scheme: dark;
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    font-family: var(--font-Mona10x12), sans-serif;
+
+    @apply bg-background text-foreground;
+  }
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+}
+
+/* ===================================
+   OLD PROGRAM STYLE THEME
+=================================== */
+
+:root,
+:root.dark {
+  color-scheme: dark;
+
+  --background: #081110;
+  --foreground: #b0e7da;
+
+  --card: #0d1b19;
+  --card-foreground: #b0e7da;
+
+  --popover: #0d1b19;
+  --popover-foreground: #b0e7da;
+
+  --primary: #17e5a1;
+  --primary-foreground: #06130e;
+
+  --secondary: #102b25;
+  --secondary-foreground: #8ce4c9;
+
+  --muted: #10221e;
+  --muted-foreground: #608f84;
+
+  --accent: #52dbd3;
+  --accent-foreground: #061816;
+
+  --destructive: #ff6474;
+
+  --border: #193b36;
+  --input: #285047;
+  --ring: #17e5a1;
+
+  --radius: 0.2rem;
+
+  --chart-1: #17e5a1;
+  --chart-2: #52dbd3;
+  --chart-3: #8ce4c9;
+  --chart-4: #285047;
+  --chart-5: #608f84;
+}
+
+/* 공통 배경 */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* 터미널 패널 */
+.terminal-panel {
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--card);
+  overflow: hidden;
+}
+
+/* 패널 헤더 */
+.terminal-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 31px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  background: #0a1715;
+  color: var(--muted-foreground);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+/* 입력창 */
+.terminal-input {
+  width: 100%;
+  border: 1px solid var(--input);
+  border-radius: 2px;
+  background: #071310;
+  color: var(--foreground);
+  padding: 12px;
+  outline: none;
+}
+
+.terminal-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px #17e5a133;
+}
+
+.terminal-input::placeholder {
+  color: var(--muted-foreground);
+}
+
+/* 메인 실행 버튼 */
+.terminal-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--primary);
+  border-radius: 2px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  transition:
+    background 150ms,
+    box-shadow 150ms;
+}
+
+.terminal-button:hover:not(:disabled) {
+  background: #69ffca;
+  box-shadow: 0 0 14px #17e5a12b;
+}
+
+.terminal-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* 작은 상태 표시 */
+.terminal-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary);
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11px;
+}
+
+/* 얇은 그리드 배경 */
+.terminal-grid {
+  background-image:
+    linear-gradient(#17e5a108 1px, transparent 1px),
+    linear-gradient(90deg, #17e5a108 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* 접근성: 애니메이션 감소 설정 */
+@media (prefers-reduced-motion: reduce) {
+  .terminal-button {
+    transition: none;
+  }
+}
