@@ -3,13 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 
-import {
-  AudioLines,
-  Languages,
-  Play,
-  Settings,
-  AlertTriangle,
-} from "lucide-react";
+import { AudioLines, Play, Settings, AlertTriangle } from "lucide-react";
 
 import {
   DirectionToggle,
@@ -25,6 +19,14 @@ import {
   type SoundMapping,
 } from "@/lib/sound-api";
 
+import { RecognitionInput } from "@/components/ui/recognition-input";
+
+import {
+  recognizeKoreanVoice,
+  recognizeInputSound,
+  normalizeKorean,
+} from "@/lib/recognition-api";
+
 export function SoundTranslator() {
   const [direction, setDirection] = useState<Direction>("ko-to-sound");
 
@@ -36,7 +38,10 @@ export function SoundTranslator() {
   const [busy, setBusy] = useState(false);
   const [resultSoundId, setResultSoundId] = useState<string | null>(null);
   const [playCount, setPlayCount] = useState(0);
-
+  const [recognizedSound, setRecognizedSound] = useState("");
+  const [recognitionDistance, setRecognitionDistance] = useState<number | null>(
+    null,
+  );
   const loadMappings = useCallback(async () => {
     try {
       const data = await getSounds();
@@ -50,6 +55,67 @@ export function SoundTranslator() {
     void loadMappings();
   }, [loadMappings]);
 
+  function translateKorean(text: string) {
+    const normalized = normalizeKorean(text);
+
+    const matched = mappings.find(
+      (item) => normalizeKorean(item.korean) === normalized,
+    );
+
+    setResultSoundId(null);
+
+    if (!matched) {
+      setOutput("등록된 한국어 단어가 없습니다.");
+      return;
+    }
+
+    setResultSoundId(matched.id);
+    setPlayCount((prev) => prev + 1);
+    setOutput(matched.korean);
+  }
+  // 한국어 음성 → 텍스트 → 사운드 재생
+  async function handleKoreanVoice(blob: Blob) {
+    setError("");
+    setOutput("");
+    setResultSoundId(null);
+
+    const result = await recognizeKoreanVoice(blob);
+    const text = normalizeKorean(result.text);
+
+    if (!text) {
+      throw new Error("한국어 음성을 인식하지 못했습니다.");
+    }
+
+    // 인식된 한국어를 입력창에 표시
+    setKorean(text);
+
+    // 인식 결과를 기존 번역 함수에 바로 전달
+    translateKorean(text);
+  }
+
+  // 사운드 녹음 → 유사 사운드 검색 → 한국어 TTS
+  async function handleSoundRecognition(blob: Blob) {
+    setError("");
+    setOutput("");
+    setRecognizedSound("");
+    setRecognitionDistance(null);
+
+    const result = await recognizeInputSound(blob);
+
+    if (!result.matched) {
+      throw new Error("비교 가능한 등록 사운드가 없습니다.");
+    }
+
+    const { korean } = result.matched;
+
+    setSelectedId(result.matched.id);
+    setRecognizedSound(korean);
+    setRecognitionDistance(result.distance);
+
+    setOutput(korean);
+    speakKorean(korean);
+  }
+
   async function handleTranslate() {
     setBusy(true);
     setError("");
@@ -57,21 +123,7 @@ export function SoundTranslator() {
 
     try {
       if (direction === "ko-to-sound") {
-        const matched = mappings.find(
-          (item) => item.korean.trim() === korean.trim(),
-        );
-
-        if (!matched) {
-          setResultSoundId(null);
-          setOutput("등록된 한국어 단어가 없습니다.");
-          return;
-        }
-
-        // 재생할 사운드의 파형 표시
-        setResultSoundId(matched.id);
-        setPlayCount((prev) => prev + 1);
-
-        setOutput(matched.korean);
+        translateKorean(korean);
       } else {
         const matched = mappings.find((item) => item.id === selectedId);
 
@@ -142,6 +194,8 @@ export function SoundTranslator() {
               setOutput("");
               setError("");
               setResultSoundId(null);
+              setRecognizedSound("");
+              setRecognitionDistance(null);
             }}
           />
         </div>
@@ -162,26 +216,65 @@ export function SoundTranslator() {
           </div>
 
           {direction === "ko-to-sound" ? (
-            <textarea
-              value={korean}
-              onChange={(e) => setKorean(e.target.value)}
-              placeholder="한국어를 입력하세요..."
-              rows={4}
-              className="terminal-input resize-none"
-            />
-          ) : (
-            <select
-              value={selectedId}
-              onChange={(e) => setSelectedId(e.target.value)}
-              className="terminal-input">
-              <option value="">사운드를 선택해주세요</option>
+            <div className="flex flex-col gap-4">
+              {/* 한국어 자판 입력 */}
+              <textarea
+                value={korean}
+                onChange={(e) => setKorean(e.target.value)}
+                placeholder="한국어를 입력하거나 마이크로 말해주세요."
+                rows={4}
+                className="terminal-input resize-none"
+              />
 
-              {mappings.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.korean} — {item.fileName}
-                </option>
-              ))}
-            </select>
+              {/* 한국어 음성 인식 */}
+              <RecognitionInput
+                label="VOICE INPUT / KOREAN"
+                onRecognize={handleKoreanVoice}
+              />
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              {/* 사운드 선택 */}
+              <div className="flex flex-col gap-2">
+                <label className="terminal-label">
+                  MANUAL SELECTION / AUDIO
+                </label>
+
+                <select
+                  value={selectedId}
+                  onChange={(e) => setSelectedId(e.target.value)}
+                  className="terminal-input">
+                  <option value="">사운드를 선택해주세요</option>
+
+                  {mappings.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.korean} — {item.fileName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* 사운드 자동 인식 */}
+              <RecognitionInput
+                label="LIVE INPUT / SOUND RECOGNITION"
+                onRecognize={handleSoundRecognition}
+              />
+
+              {/* 인식 결과 */}
+              {recognizedSound && (
+                <div className="border border-primary/40 bg-primary/10 p-3">
+                  <p className="terminal-label mb-2">NEAREST AUDIO MATCH</p>
+
+                  <p className="text-sm font-semibold text-primary">
+                    {recognizedSound}
+                  </p>
+
+                  <p className="mt-2 font-terminal text-xs text-muted-foreground">
+                    DTW DISTANCE: {recognitionDistance?.toFixed(4) ?? "—"}
+                  </p>
+                </div>
+              )}
+            </div>
           )}
 
           <button

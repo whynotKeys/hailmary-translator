@@ -23,6 +23,14 @@
       {
         "from": "build/icon.ico",
         "to": "icon.ico"
+      },
+      {
+        "from": "dist/recognition-worker",
+        "to": "recognition-worker"
+      },
+      {
+        "from": "models/whisper-small",
+        "to": "models/whisper-small"
       }
     ]
   },
@@ -36,7 +44,8 @@
     "start": "next start",
     "lint": "eslint .",
     "desktop:dev": "concurrently -k \"npm run dev\" \"wait-on http://localhost:3000 && electron .\"",
-    "desktop:build": "npm run build && electron-builder --win"
+    "desktop:build": "npm run recognition:build && npm run build && electron-builder --win",
+    "recognition:build": "python\\.venv\\Scripts\\python.exe -m PyInstaller --noconfirm --clean --onedir --name recognition-worker --collect-all faster_whisper --collect-all ctranslate2 --collect-all tokenizers --collect-all av --collect-all scipy python/worker.py"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

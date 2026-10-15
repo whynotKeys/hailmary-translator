@@ -11,4 +11,9 @@ contextBridge.exposeInMainWorld("desktopAPI", {
 
   updateSound: (id, korean) =>
     ipcRenderer.invoke("sound:update", { id, korean }),
+
+  recognizeKorean: (wavBytes) =>
+    ipcRenderer.invoke("recognition:stt", wavBytes),
+
+  recognizeSound: (payload) => ipcRenderer.invoke("recognition:match", payload),
 });

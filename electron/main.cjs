@@ -8,6 +8,8 @@ const serveHandler = require("serve-handler");
 const isDev = !app.isPackaged;
 const MAX_BYTES = 10 * 1024 * 1024;
 
+const { registerRecognitionIPC } = require("./recognition.cjs");
+
 let mainWindow = null;
 let staticServer = null;
 
@@ -30,6 +32,13 @@ async function readMappings() {
     throw error;
   }
 }
+
+registerRecognitionIPC({
+  ipcMain,
+  app,
+  checkSender,
+  readMappings,
+});
 
 function normalizeKorean(word) {
   return word.trim().normalize("NFC");

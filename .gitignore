@@ -7,3 +7,14 @@ node_modules
 .DS_Store
 out/
 release/
+
+# Python
+python/.venv/
+python/__pycache__/
+*.pyc
+*.spec
+build/recognition-worker/
+
+# Recognition build
+dist/recognition-worker/
+models/whisper-small/
